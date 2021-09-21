@@ -13,6 +13,8 @@ class WhichKeyConfig(BaseModel):
     editor: str = os.getenv("EDITOR", "nano")
     action_templates: dict[str, str]
     default_template: str
+    width: int = 300
+    height: int = 100
 
 
 class BindingsConfig(BaseModel):
@@ -45,7 +47,9 @@ class WhichKeyDialog:
             self.root = tk.Tk()
             self.root.attributes("-type", "dialog")
             self.root.title("Which Key")
-            self.root.geometry("500x100")
+            self.root.geometry(
+                f"{self.config.which_key.width}x{self.config.which_key.height}"
+            )
             self.root.bind("<Key>", self.handle_keypress)
 
     def handle_keypress(self, event: Any) -> None:

@@ -2,6 +2,8 @@
 terminal = "alacritty"
 editor = "lvim"
 default_template = "command"
+width = 500
+height = 100
 
 [which_key.action_templates]
 command = "{action}"
