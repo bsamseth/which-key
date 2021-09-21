@@ -46,6 +46,5 @@ repos:
         name: mypy
         stages: [commit]
         language: system
-        entry: poetry run mypy which_key
-        pass_filenames: false
+        entry: poetry run mypy
         types: [python]
