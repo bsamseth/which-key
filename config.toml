@@ -1,0 +1,28 @@
+[which_key]
+terminal = "alacritty"
+editor = "lvim"
+default_template = "command"
+
+[which_key.action_templates]
+command = "{action}"
+terminal = "{terminal} -e {action}"
+edit = "{terminal} -e {editor} {action}"
+
+[leader.c]
+label = "Edit configs"
+
+[leader.c.l]
+label = "lvim"
+template = "edit"
+action = "~/.config/lvim/config.lua"
+
+[leader.a]
+label = "Applications"
+
+[leader.a.h]
+template = "terminal"
+action = "htop"
+
+[leader.a.i]
+template = "terminal"
+action = "ipython"
