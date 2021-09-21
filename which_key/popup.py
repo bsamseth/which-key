@@ -48,13 +48,16 @@ class WhichKeyDialog:
             self.root.geometry("500x100")
             self.root.bind("<Key>", self.handle_keypress)
 
-    def handle_keypress(self, event) -> None:
-        if event.char == "\x1b":  # Escape
+    def handle_keypress(self, event: Any) -> None:
+        char = getattr(event, "char", None)
+        assert isinstance(char, str)
+
+        if char == "\x1b":  # Escape
             self.root.quit()
             return
 
-        if event.char in self.current_config.__fields_set__:
-            self.current_config = self.current_config.__dict__[event.char]
+        if char in self.current_config.__fields_set__:
+            self.current_config = self.current_config.__dict__[char]
 
             if self.current_config.action:
                 command = self.config.which_key.action_templates[
@@ -71,7 +74,7 @@ class WhichKeyDialog:
             else:
                 self.update_view()
 
-    def run(self):
+    def run(self) -> None:
         self.update_view()
         self.root.mainloop()
 
