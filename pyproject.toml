@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "which-key"
-version = "0.2.0"
+version = "0.2.1"
 description = "Universal command launcher"
 license = "MIT"
 authors = ["Bendik Samseth <b.samseth@gmail.com>"]
@@ -31,7 +31,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.commitizen]
-version = "0.2.0"
+version = "0.2.1"
 version_files = [
     "which_key/__init__.py",
     "pyproject.toml",
