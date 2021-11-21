@@ -24,7 +24,7 @@ types-toml = "^0.10.1"
 mkdocs-material = "^7.3.6"
 
 [tool.poetry.scripts]
-which-key = "which_key.cli:run"
+which-key = "which_key.cli:app"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
