@@ -1,8 +1,13 @@
 [tool.poetry]
 name = "which-key"
 version = "0.2.0"
-description = ""
+description = "Universal command launcher"
+license = "MIT"
 authors = ["Bendik Samseth <b.samseth@gmail.com>"]
+readme = "README.md"
+homepage = "https://bsamseth.github.io/which-key/"
+documentation = "https://bsamseth.github.io/which-key/"
+repository = "https://github.com/bsamseth/which-key"
 
 [tool.poetry.dependencies]
 python = "^3.9"

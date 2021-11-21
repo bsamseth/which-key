@@ -1,0 +1,14 @@
+name: Publish to PyPI
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build and publish to pypi
+      uses: JRubics/poetry-publish@v1.9
+      with:
+        pypi_token: ${{ secrets.PYPI_TOKEN }}
