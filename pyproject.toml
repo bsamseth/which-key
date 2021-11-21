@@ -8,6 +8,7 @@ authors = ["Bendik Samseth <b.samseth@gmail.com>"]
 python = "^3.9"
 toml = "^0.10.2"
 pydantic = "^1.8.2"
+typer = "^0.4.0"
 
 [tool.poetry.dev-dependencies]
 black = "^21.9b0"
@@ -15,6 +16,9 @@ isort = "^5.9.3"
 flake8 = "^3.9.2"
 mypy = "^0.910"
 types-toml = "^0.10.0"
+
+[tool.poetry.scripts]
+which-key = "which_key.cli:run"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

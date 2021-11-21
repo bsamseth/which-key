@@ -1,5 +1,7 @@
 import subprocess
+import sys
 import tkinter as tk
+from argparse import Namespace
 from pathlib import Path
 from tkinter import ttk
 from typing import Any, Union
@@ -10,7 +12,7 @@ from which_key.config import Config
 
 
 class WhichKeyDialog:
-    def __init__(self, config_path: Union[str, Path]) -> None:
+    def __init__(self, config_path: Union[str, Path], prefix: str = "") -> None:
         with open(config_path) as f:
             self.config = Config(**toml.load(f))
 
@@ -27,6 +29,10 @@ class WhichKeyDialog:
                 f"{self.config.which_key.width}x{self.config.which_key.height}+{x}+{y}"
             )
             self.root.bind("<Key>", self.handle_keypress)
+
+            # Simulate the keys in the prefix to get the current config:
+            for key in prefix:
+                self.handle_keypress(Namespace(char=key))
 
     def handle_keypress(self, event: Any) -> None:
         char = getattr(event, "char", None)
@@ -50,6 +56,7 @@ class WhichKeyDialog:
                 print("doing:", command)
                 subprocess.Popen(command, start_new_session=True, shell=True)
                 self.root.quit()
+                sys.exit(0)
             else:
                 self.update_view()
 
@@ -71,9 +78,3 @@ class WhichKeyDialog:
                 if label:
                     tk_label = ttk.Label(lf, text=f"{key}: {label}")
                     tk_label.grid(column=i, row=0, ipadx=10, ipady=10)
-
-
-if __name__ == "__main__":
-
-    dialog = WhichKeyDialog(Path(__file__).parent.parent / "config.toml")
-    dialog.run()
