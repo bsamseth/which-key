@@ -24,6 +24,13 @@ which-key = "which_key.cli:run"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.commitizen]
+version = "0.1.0"
+version_files = [
+    "which_key/__init__.py",
+    "pyproject.toml",
+]
+
 [tool.isort]
 multi_line_output = 3
 include_trailing_comma = true
