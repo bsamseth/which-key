@@ -1,41 +1,12 @@
-import os
 import subprocess
 import tkinter as tk
 from pathlib import Path
-from typing import Any, Optional, Union
+from tkinter import ttk
+from typing import Any, Union
 
 import toml
-from pydantic import BaseModel, Extra
 
-
-class WhichKeyConfig(BaseModel):
-    terminal: str = "alacritty"
-    editor: str = os.getenv("EDITOR", "nano")
-    action_templates: dict[str, str]
-    default_template: str
-    width: int = 300
-    height: int = 100
-
-
-class BindingsConfig(BaseModel):
-    label: Optional[str]
-    action: Optional[str]
-    template: Optional[str]
-
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        new_kwargs = {
-            k: (BindingsConfig(**v) if len(k) == 1 and isinstance(v, dict) else v)
-            for k, v in kwargs.items()
-        }
-        super().__init__(*args, **new_kwargs)
-
-    class Config:
-        extra = Extra.allow
-
-
-class Config(BaseModel):
-    which_key: WhichKeyConfig
-    leader: BindingsConfig
+from which_key.config import Config
 
 
 class WhichKeyDialog:
@@ -47,8 +18,13 @@ class WhichKeyDialog:
             self.root = tk.Tk()
             self.root.attributes("-type", "dialog")
             self.root.title("Which Key")
+
+            ws = self.root.winfo_screenwidth()
+            hs = self.root.winfo_screenheight()
+            x = int((self.config.which_key.x * ws) - (self.config.which_key.width / 2))
+            y = int((self.config.which_key.y * hs) - (self.config.which_key.height / 2))
             self.root.geometry(
-                f"{self.config.which_key.width}x{self.config.which_key.height}"
+                f"{self.config.which_key.width}x{self.config.which_key.height}+{x}+{y}"
             )
             self.root.bind("<Key>", self.handle_keypress)
 
@@ -68,9 +44,8 @@ class WhichKeyDialog:
                     self.current_config.template
                     or self.config.which_key.default_template
                 ].format(
-                    terminal=self.config.which_key.terminal,
-                    editor=self.config.which_key.editor,
                     action=self.current_config.action,
+                    **self.config.which_key.template_variables,
                 )
                 print("doing:", command)
                 subprocess.Popen(command, start_new_session=True, shell=True)
@@ -85,12 +60,17 @@ class WhichKeyDialog:
     def update_view(self) -> None:
         for element in self.root.winfo_children():
             element.destroy()
-        for key in sorted(self.current_config.__fields_set__):
+
+        lf = ttk.LabelFrame(self.root, text=self.current_config.label or "")
+        lf.grid(column=0, row=0, padx=20, pady=20)
+
+        for i, key in enumerate(sorted(self.current_config.__fields_set__)):
             if len(key) == 1:
                 opts = self.current_config.__dict__[key]
                 label = opts.label or opts.action
                 if label:
-                    tk.Label(self.root, text=f"{key}: {label}").pack()
+                    tk_label = ttk.Label(lf, text=f"{key}: {label}")
+                    tk_label.grid(column=i, row=0, ipadx=10, ipady=10)
 
 
 if __name__ == "__main__":

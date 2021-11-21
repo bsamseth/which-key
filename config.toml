@@ -4,11 +4,17 @@ editor = "lvim"
 default_template = "command"
 width = 500
 height = 100
+x = 0.5
+y = 0.8
+
+[which_key.template_variables]
+terminal = "alacritty"
+editor = "lvim"
 
 [which_key.action_templates]
 command = "{action}"
 terminal = "{terminal} -e {action}"
-edit = "{terminal} -e {editor} {action}"
+edit = "gtk-launch {editor} {action}"
 
 [leader.c]
 label = "Edit configs"
